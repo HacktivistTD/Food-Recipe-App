@@ -5,11 +5,11 @@ const RecipeSchema = new mongoose.Schema({
     description: { type: String },
     ingredient: { type: String },
     imageUrl: { type: String },
-    userID: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true
-    }
+    // userID: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "User",
+    //     required: true
+    // }
 });
 
 const RecipeModel = mongoose.model("Recipe", RecipeSchema);

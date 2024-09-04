@@ -6,9 +6,8 @@ function CreateRecipe() {
   const [recipe, setRecipe] = useState({
     name: '',
     description: '',
-    ingridient: '',
-    imageUrl: '',
-    userId: window.localStorage.getItem("id")
+    ingredient: '',
+    imageUrl: ''
   });
 
   const navigate = useNavigate();
@@ -18,18 +17,34 @@ function CreateRecipe() {
     setRecipe({ ...recipe, [name]: value });
   };
 
-
-  
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post('http://localhost:3001/recipe/create-recipie', recipe)
+
+    // Trimming the inputs to avoid issues with spaces
+    const trimmedRecipe = {
+      ...recipe,
+      name: recipe.name.trim(),
+      description: recipe.description.trim(),
+      ingredient: recipe.ingredient.trim(),
+      imageUrl: recipe.imageUrl.trim()
+    };
+
+    // Basic validation
+    if (!trimmedRecipe.name || !trimmedRecipe.description || !trimmedRecipe.ingredient || !trimmedRecipe.imageUrl) {
+      alert("Please fill all fields.");
+      return;
+    }
+
+    axios.post('http://localhost:3001/recipe/create-recipe', trimmedRecipe)
       .then(result => {
-        navigate('/')
         console.log(result.data);
-        alert("Recipe created");
-        navigate('/recipe/saved-recipe');
+        alert("Recipe created successfully!");
+        navigate('/recipe/saved-recipe');  // Redirect to saved recipes
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.error(err);
+        alert("An error occurred while creating the recipe.");
+      });
   };
 
   return (
@@ -60,13 +75,13 @@ function CreateRecipe() {
             />
           </div>
           <div className="mt-3">
-            <label htmlFor="ingridient">Ingridient</label>
+            <label htmlFor="ingredient">Ingredient</label>
             <input
               type="text"
-              placeholder='Ingridient'
+              placeholder='Enter Ingredient'
               className='form-control'
-              name="ingridient"
-              value={recipe.ingridient}
+              name="ingredient"
+              value={recipe.ingredient}
               onChange={handleChange}
             />
           </div>
@@ -74,7 +89,7 @@ function CreateRecipe() {
             <label htmlFor="imageUrl">Image URL</label>
             <input
               type="text"
-              placeholder='Enter URL'
+              placeholder='Enter Image URL'
               className='form-control'
               name="imageUrl"
               value={recipe.imageUrl}
@@ -88,4 +103,4 @@ function CreateRecipe() {
   );
 }
 
-export default CreateRecipe;  // <-- Ensure this line is present
+export default CreateRecipe;

@@ -1,7 +1,16 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Nav() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Clear localStorage or any other authentication storage
+    window.localStorage.clear();
+    // Redirect to the login page or home page
+    navigate('/auth/login');
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container">
@@ -21,13 +30,17 @@ export default function Nav() {
               </Link>
             </li>
           </ul>
-          <div className="ms-auto">
+          {window.localStorage.length ? (
+            <button className='btn btn-outline-light' onClick={handleLogout}>
+              Logout
+            </button>
+          ) : (
             <Link to="/auth/register" className="btn btn-outline-light text-decoration-none">
               Login/Register
             </Link>
-          </div>
+          )}
         </div>
       </div>
     </nav>
-  )
+  );
 }

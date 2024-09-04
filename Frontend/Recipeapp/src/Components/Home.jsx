@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';  // Ensure Axios is imported
+import axios from 'axios';
+import { Link } from 'react-router-dom';  // Make sure Link is imported
 
 function Home() {
   const [recipes, setRecipes] = useState([]);
@@ -21,18 +22,14 @@ function Home() {
         {recipes.map(recipe => (
           <div key={recipe._id} className="col-md-4 mt-4">
             <div className="p-3 border">
-                 <link to={'/read-recipe/${recipe._id}' className='text-decoration -none'}>
-                          <h3>{recipe.name}</h3>
-                 
-                 </link>
-
-
              
-
-
-              <img src={recipe.imageUrl} alt={recipe.name} className="img-fluid" />
-
-
+              
+              <img src={recipe.imageUrl} alt={recipe.name} className="img-fluid"  style={{ width: '400px', height: '350px', objectFit: 'cover' }}  />
+              <Link to={`/read-recipe/${recipe._id}`} className='text-decoration-none'>
+                
+                <h3 className="text-center">{recipe.name}</h3> 
+                </Link>
+              
             </div>
           </div>
         ))}
